@@ -1,0 +1,5 @@
+Head Size(cm^3)	Brain Weight(grams)
+1			5
+2			6
+3			7
+4			8
