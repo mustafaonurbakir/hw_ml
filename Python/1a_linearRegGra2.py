@@ -18,12 +18,13 @@ def estimate_coef4(x,y):
         
         m_deriv = 0
         c_deriv = 0
+        print("m_deriv: ", m_deriv, " c_deriv: ", c_deriv)
         # Performing Gradient Descent 
         for i in range(n): 
             m_deriv = m_deriv + (-2 * x[i] * (y[i] - (m * x[i] + c)))
             c_deriv = c_deriv + (-2 * (y[i] - (m * x[i] + c)))
-            #print ("i: ", i, "m_deriv", m_deriv)
-            #print ("i: ", i, "c_deriv", c_deriv)
+            print ("i: ", i, "m_deriv", m_deriv)
+            print ("i: ", i, "c_deriv", c_deriv)
             
         m = m - ((m_deriv / n) * L)
         c = c - ((c_deriv / n) * L)
@@ -76,8 +77,8 @@ def estimate_coef(x, y):
     m_x, m_y = np.mean(x), np.mean(y) 
   
     # calculating cross-deviation and deviation about x 
-    SS_xy = sum(y*x) - n*m_y*m_x 
-    SS_xx = sum(x*x) - n*m_x*m_x 
+    SS_xy = sum(y*x) - n * m_y * m_x 
+    SS_xx = sum(x*x) - n * m_x * m_x 
   
     # calculating regression coefficients 
     b_1 = SS_xy / SS_xx 
@@ -136,14 +137,14 @@ if __name__ == "__main__":
     head_size, brain_size = read_datas(file_name)
     
     # estimating coefficients 
-    b = estimate_coef(head_size, brain_size) 
-    b2 = estimate_coef2(head_size, brain_size) 
+    #b = estimate_coef(head_size, brain_size) 
+    #b2 = estimate_coef2(head_size, brain_size) 
     b4 = estimate_coef4(head_size, brain_size)
 
-    print("\nEstimated coefficients:\n\t b_0 = {}  \n\t b_1 = {}".format(b[0], b[1])) 
-    print("\nEstimated coefficients2:\n\t b_0 = {}  \n\t b_1 = {}".format(b2[0], b2[1])) 
+    #print("\nEstimated coefficients:\n\t b_0 = {}  \n\t b_1 = {}".format(b[0], b[1])) 
+    #print("\nEstimated coefficients2:\n\t b_0 = {}  \n\t b_1 = {}".format(b2[0], b2[1])) 
     print("\nEstimated coefficients4:\n\t b_0 = {}  \n\t b_1 = {}".format(b4[0], b4[1])) 
     
     # plotting regression line 
-    plot_regression_line(head_size, brain_size, b) 
-    plot_regression_line(head_size, brain_size, b2) 
+    #plot_regression_line(head_size, brain_size, b) 
+    #plot_regression_line(head_size, brain_size, b2) 
