@@ -6,7 +6,7 @@ def estimate_coef3(x,y):
 	m=0
 	c=0
 	
-	L=0.0001
+	L=0.0000000000000000001
 	epochs = 1000
 	
 	n = float(len(x))
@@ -15,21 +15,18 @@ def estimate_coef3(x,y):
 	for i in range(0,10):
 		
 		Y_pred2 = [(e * m + c) for e in x]
-		print("uzunluk: ",len(Y_pred2))
-		print("y_pred2: ", Y_pred2)
 		Y_pred = np.array(Y_pred2)
-		print("y_pred: ", Y_pred)
 		
-		print("deneme: ", (1/n) * np.sum(x * (y-Y_pred)))
-		
+		print("deneme: ", np.sum(x * (y-Y_pred)))
+		print ("y: ", y-Y_pred)
 		#D_m = "{:.2f}".format((-2/n) * np.sum(x * (y - Y_pred)))  # Derivative wrt m
 		#D_c = "{:.2f}".format((-2/n) * np.sum(y - Y_pred))  # Derivative wrt c
 		D_m = int((-2/n) * np.sum(x * (y - Y_pred)))  # Derivative wrt m
 		D_c = int((-2/n) * np.sum(y - Y_pred))  # Derivative wrt c
 		print ("d_m: ", D_m, " D_c: ", D_c)
 		
-		m = m - (L * D_m)  # Update m
-		c = c - (L * D_c)  # Update c
+		m -= (L * D_m)  # Update m
+		c -= (L * D_c)  # Update c
 		#m = "{:.4f}".format(m - L * D_m)  # Update m
 		#c = "{:.4f}".format(c - L * D_c)  # Update c		
 		print("m: ", m, " c: ", c)
@@ -82,17 +79,21 @@ def estimate_coef2(x, y):
 
 	return(m, c) 
 
-def linear_regression(X, y, m_current=0, b_current=0, epochs=1000, learning_rate=0.0001):
+#https://towardsdatascience.com/linear-regression-using-gradient-descent-in-10-lines-of-code-642f995339c0
+def linear_regression(X, y, m_current=0, b_current=0, epochs=1000, learning_rate=1):
 	N = float(len(y))
+	
 	for i in range(epochs):
-		y_current = (m_current * X) + b_current
-		cost = sum([data**2 for data in (y-y_current)]) / N
-		
+		y_current = m_current * X + b_current
+		#cost = int(sum ([data**2 for data in (y-y_current)]) / N)
+		cost =1
 		m_gradient = -(2/N) * sum(X * (y - y_current))
 		b_gradient = -(2/N) * sum(y - y_current)
+		print("m_dra: ", m_gradient, " b_gra: ", b_gradient)
 
 		m_current = m_current - (learning_rate * m_gradient)
 		b_current = b_current - (learning_rate * b_gradient)
+	
 	return m_current, b_current, cost
 
 def estimate_coef(x, y): 
@@ -114,6 +115,40 @@ def estimate_coef(x, y):
 
 	return(b_0, b_1) 
 
+#deneme kaggle
+#https://www.kaggle.com/tentotheminus9/linear-regression-from-scratch-gradient-descent
+def gradient_descent2(x, y, theta, iterations, alpha):
+	x = (x - x.mean()) / x.std()
+	x = np.c_[np.ones(x.shape[0]), x] 
+
+	#alpha = 0.01 #Step size
+	#iterations = 2000 #No. of iterations
+	m = y.size #No. of data points
+	np.random.seed(123) #Set the seed
+	theta = np.random.rand(2) #Pick some random values to start with
+	print("theta: ", theta)
+
+	#GRADIENT DESCENT
+	def gradient_descent(x, y, theta, iterations, alpha):
+		print("asdf")
+		past_costs = []
+		past_thetas = [theta]
+		for i in range(iterations):
+			prediction = np.dot(x, theta)
+			error = prediction - y
+			cost = 1/(2*m) * np.dot(error.T, error)
+			past_costs.append(cost)
+			theta = theta - (alpha * (1/m) * np.dot(x.T, error))
+			past_thetas.append(theta)
+			
+		return past_thetas, past_costs
+	
+	past_thetas, past_costs = gradient_descent(x, y, theta, iterations, alpha)
+	theta = past_thetas[-1]
+	print("theta: ", theta)
+	#Print the results...
+	print("Gradient Descent: {:.2f}, {:.2f}".format(theta[0], theta[1]))
+	return theta[0], theta[1]
 
 def plot_regression_line(x, y, b): 
 	# plotting the actual points as scatter plot 
@@ -164,14 +199,19 @@ if __name__ == "__main__":
 	# estimating coefficients 
 	#b = estimate_coef(datas["head_size"], datas["brain_size"]) 
 	#b2 = estimate_coef2(datas["head_size"], datas["brain_size"]) 
-	#b3 = linear_regression(datas["head_size"], datas["brain_size"], 0, 0, 1000, 0.0001)
-	b3 = estimate_coef3(datas["head_size"], datas["brain_size"])
+	#b4 = linear_regression(datas["head_size"], datas["brain_size"], 0, 0, 1000, 1)
+	#b3 = estimate_coef3(datas["head_size"], datas["brain_size"])
+	b4 = gradient_descent2(datas["head_size"], datas["brain_size"], (10,1), 1000, 0.01)
 
 	#print("\nEstimated coefficients:\n\t b_0 = {}  \n\t b_1 = {}".format(b[0], b[1])) 
 	#print("\nEstimated coefficients2:\n\t b_0 = {}  \n\t b_1 = {}".format(b2[0], b2[1])) 
-	print("\nEstimated coefficients3:\n\t b_0 = {}  \n\t b_1 = {}".format(b3[0], b3[1])) 
-	
+	#print("\nEstimated coefficients3:\n\t b_0 = {}  \n\t b_1 = {}".format(b3[0], b3[1])) 
+	#print("\nEstimated coefficients4:\n\t b_0 = {}  \n\t b_1 = {}".format(b4[0], b4[1])) 
+	print("\nEstimated coefficients5:\n\t b_0 = {}  \n\t b_1 = {}".format(b4[0], b4[1])) 
+
 	# plotting regression line 
 	#plot_regression_line(datas["head_size"], datas["brain_size"], b) 
 	#plot_regression_line(datas["head_size"], datas["brain_size"], b2) 
-	plot_regression_line(datas["head_size"], datas["brain_size"], b3) 
+	#plot_regression_line(datas["head_size"], datas["brain_size"], b3) 
+	#plot_regression_line(datas["head_size"], datas["brain_size"], b4) 
+	plot_regression_line(datas["head_size"], datas["brain_size"], b4) 
