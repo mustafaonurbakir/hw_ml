@@ -15,6 +15,7 @@ This program tested on Python 3.7.0
 
 import numpy as np
 import pandas as pd
+import os
 import matplotlib.pyplot as plt 
 
 
@@ -109,6 +110,10 @@ def read_file(file_name):
 
 if __name__ == "__main__":
 	file_name = "regression_data.txt"
+	
+	if not os.path.isfile(file_name):
+		print( "File not found!")
+		exit()
 	K = 5 #for k-fold cross val
 
 	#read the data from file

@@ -1,9 +1,9 @@
 """
-Mustafa Onur Bakır
+Mustafa Onur Bakir
 150130059
 
 Homework 1
-Part 2-e
+Part 2-c-d-e
 
 This program tested on Python 3.7.0
 
@@ -80,8 +80,8 @@ if __name__ == "__main__":
 	file_name = "classification_train.txt"
 	file_name_test = "classification_test.txt"
 	
-	exists = os.path.isfile("classification_train.txt")
-	exists2 = os.path.isfile("classification_test.txt")
+	exists = os.path.isfile(file_name)
+	exists2 = os.path.isfile(file_name_test)
 	if not exists or not exists2:
 		print( "File not found!")
 		exit()

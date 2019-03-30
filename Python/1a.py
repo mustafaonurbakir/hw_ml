@@ -4,7 +4,6 @@ Mustafa Onur Bakır
 
 Homework 1
 Part1-a
-Part1-b
 
 This file include the solution of the Part1-a (Lineer Regression with Gradiant Descent) and
 solution of the Part1-b (Cross Validation)
@@ -16,6 +15,7 @@ This program tested on Python 3.7.0
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt 
+import os
 
 
 #this function calculate the regression
@@ -86,7 +86,9 @@ def read_file(file_name):
 
 if __name__ == "__main__":
 	file_name = "regression_data.txt"
-	K = 5 #for k-fold cross val
+	if not os.path.isfile(file_name):
+		print( "File not found!")
+		exit()
 
 	#read the data from file
 	datas = read_file(file_name)
