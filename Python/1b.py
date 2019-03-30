@@ -119,7 +119,7 @@ if __name__ == "__main__":
 	for train_x, train_y, test_x, test_y in k_fold_cross_val(datas["head_size"], datas["brain_size"], K):
 
 		#calculate regresion via gradient method
-		m, c = gradient_descent(train_x, train_y, 1000, 0.000000001)
+		m, c = gradient_descent(train_x, train_y, 1000, 0.00000001)
 
 		#calculate error with MSE
 		error = mean_square_error(test_x, test_y, m, c)
@@ -130,7 +130,7 @@ if __name__ == "__main__":
 
 		#print values
 		print("m: ", m, " c: ", c, " error: ", error)
-	print("Mean error: ", sum(errors)/K)
+	print("Mean square error: ", sum(errors)/K)
 
 	#plot the values and lines
 	plot_regression_line(datas["head_size"], datas["brain_size"], lines)
